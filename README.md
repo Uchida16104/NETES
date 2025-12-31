@@ -82,12 +82,14 @@ Example:
 
 ## Languages and Roles
 
-Rust: core engine  
-Python: network adapters  
-C++: low-level helpers  
-Java: GUI tools  
-PHP: web viewer  
-JS: UI rendering  
+| Language | Responsibility                          |
+| -------- | --------------------------------------- |
+| Rust     | Core engine, state machine              |
+| Python   | Network adapters                        |
+| C++      | Low-level or performance-critical tasks |
+| Java     | GUI and auxiliary tools                 |
+| PHP      | Web-based state viewer                  |
+| JS       | UI rendering only                       |
 
 ## Security Model
 
