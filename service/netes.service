@@ -1,0 +1,5 @@
+[Service]
+ExecStart=/usr/local/bin/netes-engine
+Restart=always
+RestartSec=5
+

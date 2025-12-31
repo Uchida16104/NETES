@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>NETES Control Panel</title>
+
+    <!-- Tailwind -->
+    @vite('resources/css/app.css')
+
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+
+    <!-- Vue -->
+    @vite('resources/js/app.js')
+</head>
+
+<body class="bg-gray-900 text-gray-200 font-mono">
+
+<div class="max-w-5xl mx-auto p-6 space-y-6">
+
+    <!-- STATUS -->
+    <section>
+        <h2 class="text-lg mb-2">Status</h2>
+        <pre
+            class="bg-black text-green-400 p-3 rounded"
+            hx-get="/status"
+            hx-trigger="load, every 3s"
+            hx-swap="innerHTML">
+        </pre>
+    </section>
+
+    <!-- LOGS -->
+    <section>
+        <h2 class="text-lg mb-2">Logs</h2>
+        <pre
+            id="log-box"
+            class="bg-black text-white p-4 rounded h-96 overflow-y-scroll border border-gray-700"
+            hx-get="/logs"
+            hx-trigger="load, every 2s"
+            hx-swap="innerHTML">
+        </pre>
+    </section>
+
+    <!-- JAVA -->
+    <section>
+        <h2 class="text-lg mb-2">Java GUI (dev)</h2>
+        <button
+            class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
+            hx-get="/java"
+            hx-target="#log-box"
+            hx-swap="beforeend">
+            Run Java
+        </button>
+    </section>
+
+</div>
+
+</body>
+</html>

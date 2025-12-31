@@ -1,0 +1,9 @@
+[package]
+name = "netes-engine"
+version = "1.0.0"
+edition = "2021"
+
+[[bin]]
+name = "netes-engine"
+path = "core/engine/netes_engine.rs"
+
