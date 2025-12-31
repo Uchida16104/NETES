@@ -1,6 +1,6 @@
 export default {
   content: [
-    './src/**/*.{js,vue}'
+    './src/**/*.{js,vue,blade.php}'
   ],
   theme: {
     extend: {}
