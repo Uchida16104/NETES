@@ -3,7 +3,7 @@
 #include <string>
 
 int main(int argc, char* argv[]) {
-    std::string cmd = "/Users/hirotoshiuchida/NETES/target/release/netes-engine";
+    std::string cmd = "../target/release/netes-engine";
 
     if (argc > 1) {
         cmd += " ";
