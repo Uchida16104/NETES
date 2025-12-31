@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "netes-frontend",
+  "name": "netes",
   "builds": [
     {
       "src": "package.json",
