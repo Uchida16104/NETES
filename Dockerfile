@@ -2,18 +2,24 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV COMPOSER_NO_INTERACTION=1
+ENV COMPOSER_DISABLE_XDEBUG_WARN=1
+
 WORKDIR /app
 
 RUN apt update && apt install -y \
     software-properties-common \
     curl \
+    ca-certificates \
     build-essential \
+    git \
     python3 \
     python3-pip \
     nodejs \
     npm \
     openjdk-17-jre \
-    network-manager
+    network-manager \
+ && rm -rf /var/lib/apt/lists/*
 
 RUN add-apt-repository ppa:ondrej/php -y \
  && apt update \
@@ -30,15 +36,25 @@ RUN add-apt-repository ppa:ondrej/php -y \
  && update-alternatives --set php /usr/bin/php8.4 \
  && rm -rf /var/lib/apt/lists/*
 
-RUN apt update && apt install -y rustc cargo
+RUN apt update && apt install -y \
+    rustc \
+    cargo \
+ && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g tailwindcss vite @vue/cli
+RUN npm install -g \
+    tailwindcss \
+    vite \
+    @vue/cli
 
 COPY . .
 
 WORKDIR /app/web/backend/laravel
-RUN composer install --no-dev --optimize-autoloader
-RUN php artisan key:generate
+
+RUN composer install \
+    --no-dev \
+    --prefer-dist \
+    --optimize-autoloader \
+    --no-scripts
 
 EXPOSE 8000
 
