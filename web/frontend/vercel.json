@@ -1,13 +1,11 @@
 {
   "version": 2,
-  "name": "netes-frontend",
+  "name": "netes",
   "builds": [
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+      "config": { "distDir": "dist" }
     }
   ],
   "routes": [
