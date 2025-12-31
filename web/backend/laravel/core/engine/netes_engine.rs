@@ -113,7 +113,7 @@ fn connect_virtual() -> bool {
 
 fn call_python(mode: &str) -> bool {
     Command::new("python3")
-        .arg("/Users/hirotoshiuchida/NETES/core/adapters/auto.py")
+        .arg("../../../../../core/adapters/auto.py")
         .arg(mode)
         .status()
         .map(|s| s.success())
