@@ -3,6 +3,8 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /app
 
+RUN tree -L 4 web
+
 RUN apt update && apt install -y \
     curl \
     build-essential \
