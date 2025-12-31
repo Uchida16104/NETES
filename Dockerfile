@@ -18,16 +18,16 @@ RUN apt update && apt install -y \
 RUN add-apt-repository ppa:ondrej/php -y \
  && apt update \
  && apt install -y \
-    php8.2 \
-    php8.2-cli \
-    php8.2-mbstring \
-    php8.2-xml \
-    php8.2-curl \
-    php8.2-zip \
-    php8.2-bcmath \
-    php8.2-intl \
+    php8.4 \
+    php8.4-cli \
+    php8.4-mbstring \
+    php8.4-xml \
+    php8.4-curl \
+    php8.4-zip \
+    php8.4-bcmath \
+    php8.4-intl \
     composer \
- && update-alternatives --set php /usr/bin/php8.2 \
+ && update-alternatives --set php /usr/bin/php8.4 \
  && rm -rf /var/lib/apt/lists/*
 
 RUN apt update && apt install -y rustc cargo
