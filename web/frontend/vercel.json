@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "name": "netes-frontend",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "vite.config.js",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "https://netes.onrender.com/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "resources/views/index.blade.php"
+    }
+  ]
+}
