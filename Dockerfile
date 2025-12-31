@@ -1,9 +1,8 @@
 FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV COMPOSER_ALLOW_SUPERUSER=1
 WORKDIR /app
-
-RUN tree -L 4 web
 
 RUN apt update && apt install -y \
     curl \
@@ -28,7 +27,7 @@ RUN npm install -g tailwindcss vite @vue/cli
 
 COPY . .
 
-WORKDIR /app/web/background/laravel
+WORKDIR /app/web/backend/laravel
 RUN composer install --no-dev --optimize-autoloader
 RUN php artisan key:generate
 
