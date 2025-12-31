@@ -18,12 +18,34 @@ NETES strictly separates execution from observation.
 
 ## Architecture
 
-Rust Engine (Daemon)
-  -> writes status.json / web.log
-Laravel Web (Viewer only)
-  -> reads files
-Frontend (HTMX / Tailwind / Vue)
-  -> renders state
+```
++--------------------+
+|   Rust Engine      |
+|  (Daemon Process)  |
++---------+----------+
+          |
+          | writes
+          v
++--------------------+
+| status.json        |
+| web.log            |
++---------+----------+
+          |
+          | reads
+          v
++--------------------+
+| Laravel Web        |
+| (Viewer Only)      |
++---------+----------+
+          |
+          | renders
+          v
++--------------------+
+| Web UI             |
+| HTMX + Tailwind    |
+| Vue.js (optional)  |
++--------------------+
+```
 
 ## Components
 
@@ -32,6 +54,13 @@ Frontend (HTMX / Tailwind / Vue)
 - Executes recovery strategies
 - Calls Python / C++ internally
 - Writes /tmp/netes/status.json
+Example state file:
+```
+{
+  "state": "Done",
+  "timestamp": "2025-12-30 22:11:45"
+}
+```
 
 ### Laravel Backend
 - /status : read-only JSON
@@ -42,6 +71,14 @@ Frontend (HTMX / Tailwind / Vue)
 - HTMX polling
 - Tailwind terminal UI
 - Vue.js optional
+Example:
+```
+<pre
+  hx-get="/status"
+  hx-trigger="every 2s"
+  class="bg-black text-green-400 font-mono p-4">
+</pre>
+```
 
 ## Languages and Roles
 
