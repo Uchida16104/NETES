@@ -59,10 +59,15 @@ RUN composer install \
     --optimize-autoloader \
     --no-scripts
 
+RUN php artisan key:generate --force \
+ && php artisan config:clear \
+ && php artisan route:clear \
+ && php artisan view:clear \
+ && php artisan storage:link
+
 EXPOSE 8000
 
 CMD sh -c "\
-php artisan key:generate --force && \
 php artisan migrate --force || true && \
 php artisan serve --host=0.0.0.0 --port=8000 \
 "
