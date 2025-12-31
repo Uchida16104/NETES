@@ -17,10 +17,10 @@ public class NetesGUI {
         b.addActionListener(e -> {
             try {
                 ProcessBuilder pb = new ProcessBuilder(
-                    "/Users/hirotoshiuchida/NETES/target/debug/netes-engine"
+                    "../../target/debug/netes-engine"
                 );
 
-                pb.directory(new java.io.File("/Users/hirotoshiuchida/NETES"));
+                pb.directory(new java.io.File("../.."));
                 pb.inheritIO();
                 pb.start();
 
