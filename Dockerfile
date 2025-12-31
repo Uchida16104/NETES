@@ -5,23 +5,32 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 WORKDIR /app
 
 RUN apt update && apt install -y \
+    software-properties-common \
     curl \
     build-essential \
-    rustc \
-    cargo \
     python3 \
     python3-pip \
-    php \
-    php-cli \
-    php-mbstring \
-    php-xml \
-    php-curl \
-    composer \
     nodejs \
     npm \
     openjdk-17-jre \
-    network-manager \
-    && rm -rf /var/lib/apt/lists/*
+    network-manager
+
+RUN add-apt-repository ppa:ondrej/php -y \
+ && apt update \
+ && apt install -y \
+    php8.2 \
+    php8.2-cli \
+    php8.2-mbstring \
+    php8.2-xml \
+    php8.2-curl \
+    php8.2-zip \
+    php8.2-bcmath \
+    php8.2-intl \
+    composer \
+ && update-alternatives --set php /usr/bin/php8.2 \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN apt update && apt install -y rustc cargo
 
 RUN npm install -g tailwindcss vite @vue/cli
 
