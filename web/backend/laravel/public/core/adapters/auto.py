@@ -14,10 +14,10 @@ def run(cmd):
         return False
 
 if os == "darwin":
-    run(["python3", "/Users/hirotoshiuchida/NETES/core/adapters/macos.py", mode])
+    run(["python3", "./macos.py", mode])
 elif os == "linux":
-    run(["python3", "/Users/hirotoshiuchida/NETES/core/adapters/linux.py", mode])
+    run(["python3", "./linux.py", mode])
 elif os == "windows":
-    run(["python3", "/Users/hirotoshiuchida/NETES/core/adapters/windows.py", mode])
+    run(["python3", "./windows.py", mode])
 
 sys.exit(0)
