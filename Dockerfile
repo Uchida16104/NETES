@@ -4,6 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV APP_ENV=production
 ENV APP_DEBUG=false
+ENV LOG_CHANNEL=stderr
 
 RUN apt update && apt install -y \
     software-properties-common \
@@ -43,7 +44,6 @@ RUN apt update && apt install -y rustc cargo \
 RUN npm install -g tailwindcss vite @vue/cli
 
 WORKDIR /app
-
 COPY . .
 
 WORKDIR /app/web/backend/laravel
@@ -56,17 +56,13 @@ RUN composer install \
     --no-dev \
     --no-interaction \
     --prefer-dist \
-    --optimize-autoloader
-
-RUN php artisan key:generate --force \
- && php artisan storage:link \
- && php artisan config:clear \
- && php artisan route:clear \
- && php artisan view:clear
+    --optimize-autoloader \
+    --no-scripts
 
 EXPOSE 8000
 
 CMD sh -c "\
+php artisan key:generate --force && \
 php artisan migrate --force || true && \
 php artisan serve --host=0.0.0.0 --port=8000 \
 "
