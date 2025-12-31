@@ -1,0 +1,74 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+const NETES_STATUS_FILE = '/tmp/netes/status.json';
+const NETES_LOG_FILE    = '/tmp/netes/web.log';
+const JAVA_SRC          = '../../../gui/java/NetesGUI.java';
+
+Route::get('/', function () {
+    return view('index');
+});
+
+Route::get('/status', function () {
+
+    if (!file_exists(NETES_STATUS_FILE)) {
+        return response()->json([
+            'state'     => 'unknown',
+            'timestamp' => null
+        ]);
+    }
+
+    $json = json_decode(file_get_contents(NETES_STATUS_FILE), true);
+
+    if (!is_array($json)) {
+        return response()->json([
+            'state'     => 'error',
+            'timestamp' => null
+        ]);
+    }
+
+    if (isset($json['timestamp']) && is_numeric($json['timestamp'])) {
+        $json['timestamp'] = date(
+            'Y-m-d H:i:s',
+            (int) $json['timestamp']
+        );
+    }
+
+    return response()->json($json);
+});
+
+
+Route::get('/logs', function () {
+
+    if (!file_exists(NETES_LOG_FILE)) {
+        return '';
+    }
+
+    $lines = file(NETES_LOG_FILE, FILE_IGNORE_NEW_LINES);
+    return implode("\n", array_slice($lines, -80));
+});
+
+Route::get('/java', function () {
+
+    $start = microtime(true);
+
+    $cmd = sprintf(
+        'java %s 2>&1',
+        escapeshellarg(JAVA_SRC)
+    );
+
+    $output  = trim(shell_exec($cmd));
+    $elapsed = round((microtime(true) - $start) * 1000, 2);
+
+    $line = sprintf(
+        "[%s] /java %sms %s\n",
+        date('Y-m-d H:i:s'),
+        $elapsed,
+        $output === '' ? '[no output]' : $output
+    );
+
+    file_put_contents(NETES_LOG_FILE, $line, FILE_APPEND | LOCK_EX);
+
+    return response($output, 200, ['Content-Type' => 'text/plain']);
+});
