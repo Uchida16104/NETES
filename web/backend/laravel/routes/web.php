@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 const NETES_STATUS_FILE = '/tmp/netes/status.json';
 const NETES_LOG_FILE    = '/tmp/netes/web.log';
-const JAVA_SRC          = '/Users/hirotoshiuchida/NETES/gui/java/NetesGUI.java';
+const JAVA_SRC          = '../../../gui/java/NetesGUI.java';
 
 Route::get('/', function () {
     return view('index');
