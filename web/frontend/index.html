@@ -1,61 +1,57 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>NETES Control Panel</title>
-
-    <!-- Tailwind -->
-    @vite('resources/css/app.css')
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- HTMX -->
-    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
-
-    <!-- Vue -->
-    @vite('resources/js/app.js')
+  <meta charset="UTF-8">
+  <title>NETES Dashboard</title>
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<body class="bg-gray-100 p-6">
 
-<body class="bg-gray-900 text-gray-200 font-mono">
+  <h1 class="text-3xl font-bold mb-6">NETES Dashboard</h1>
 
-<div class="max-w-5xl mx-auto p-6 space-y-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-    <!-- STATUS -->
-    <section>
-        <h2 class="text-lg mb-2">Status</h2>
-        <pre
-            class="bg-black text-green-400 p-3 rounded"
-            hx-get="/status"
-            hx-trigger="load, every 3s"
-            hx-swap="innerHTML">
-        </pre>
-    </section>
+    <!-- Python Output -->
+    <div class="bg-white shadow rounded p-4 overflow-auto h-96">
+      <h2 class="text-xl font-semibold mb-2">Python Output</h2>
+      <button 
+        class="bg-blue-500 text-white px-4 py-2 rounded mb-2"
+        hx-get="/api/python"
+        hx-target="#python-output"
+        hx-swap="innerHTML">
+        Run Python
+      </button>
+      <pre id="python-output" class="whitespace-pre-wrap text-sm"></pre>
+    </div>
 
-    <!-- LOGS -->
-    <section>
-        <h2 class="text-lg mb-2">Logs</h2>
-        <pre
-            id="log-box"
-            class="bg-black text-white p-4 rounded h-96 overflow-y-scroll border border-gray-700"
-            hx-get="/logs"
-            hx-trigger="load, every 2s"
-            hx-swap="innerHTML">
-        </pre>
-    </section>
+    <!-- Rust Output -->
+    <div class="bg-white shadow rounded p-4 overflow-auto h-96">
+      <h2 class="text-xl font-semibold mb-2">Rust Output</h2>
+      <button 
+        class="bg-green-500 text-white px-4 py-2 rounded mb-2"
+        hx-get="/api/rust"
+        hx-target="#rust-output"
+        hx-swap="innerHTML">
+        Run Rust
+      </button>
+      <pre id="rust-output" class="whitespace-pre-wrap text-sm"></pre>
+    </div>
 
-    <!-- JAVA -->
-    <section>
-        <h2 class="text-lg mb-2">Java GUI (dev)</h2>
-        <button
-            class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
-            hx-get="/java"
-            hx-target="#log-box"
-            hx-swap="beforeend">
-            Run Java
-        </button>
-    </section>
+    <!-- Java Output -->
+    <div class="bg-white shadow rounded p-4 overflow-auto h-96 col-span-2">
+      <h2 class="text-xl font-semibold mb-2">Java Output</h2>
+      <button 
+        class="bg-yellow-500 text-white px-4 py-2 rounded mb-2"
+        hx-get="/api/java"
+        hx-target="#java-output"
+        hx-swap="innerHTML">
+        Run Java
+      </button>
+      <pre id="java-output" class="whitespace-pre-wrap text-sm"></pre>
+    </div>
 
-</div>
+  </div>
 
 </body>
 </html>
