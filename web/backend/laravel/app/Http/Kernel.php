@@ -11,6 +11,8 @@ class Kernel extends HttpKernel
      * @var array<int, class-string|string>
      */
     protected $middleware = [
+        \App\Http\Middleware\HandleCors::class,
+        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \App\Http\Middleware\TrustProxies::class,
         \Fruitcake\Cors\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
@@ -35,7 +37,6 @@ class Kernel extends HttpKernel
 
         'api' => [
             \App\Http\Middleware\HandleCors::class,
-
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
