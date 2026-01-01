@@ -80,6 +80,10 @@ Example:
 </pre>
 ```
 
+## Usage
+
+The dashboard of [backend](https://netes.onrender.com) (Ex: https://dashboard.render.com/web/srv-xxxxxxxxxxxxxxxxxxxxxx/deploys/dep-oooooooooooooooooo) responded by writing the API link when the user clicked either the “Run Python,” “Run Rust,” or “Run Java” button on the [frontend](https://netes.vercel.app).
+
 ## Languages and Roles
 
 | Language | Responsibility                          |
@@ -102,3 +106,6 @@ Example:
 - Network recovery in offline environments
 - Headless systems
 - Safe observability of critical processes
+
+## Developed
+by *Hirotoshi Uchida*
