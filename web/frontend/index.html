@@ -25,22 +25,27 @@
         </div>
 
         <!-- Logs Display -->
-        <div>
-            <pre
-                hx-get="/logs"
-                hx-trigger="every 3s"
-                hx-swap="outerHTML"
-                class="text-sm bg-black text-white p-3 rounded overflow-auto h-96">
+        <pre id="logDisplay"
+             hx-get="/logs"
+             hx-trigger="every 3s"
+             hx-swap="innerHTML"
+             class="text-sm bg-black text-white p-3 rounded overflow-auto h-96">
 Loading logs...
-            </pre>
-        </div>
+        </pre>
 
     </div>
 
-    <!-- Run Job Function -->
+    <!-- Run Job + Page Load Log Reset -->
     <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            fetch('https://netes.onrender.com/run-job', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ language: 'reset' })
+            });
+        });
+
         function runJob(lang) {
-            // POST to Laravel endpoint
             fetch('https://netes.onrender.com/run-job', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
