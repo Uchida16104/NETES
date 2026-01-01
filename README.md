@@ -84,6 +84,146 @@ Example:
 
 The dashboard of backend (Ex: https://dashboard.render.com/web/srv-xxxxxxxxxxxxxxxxxxxxxx/deploys/dep-oooooooooooooooooo) responded by writing the API link when the user clicked either the “Run Python,” “Run Rust,” or “Run Java” button on the frontend.
 
+## Steps
+
+### 1. Clone or Fork the Repository
+
+You can either clone the repository for local inspection, or fork it if you plan to deploy it yourself.
+
+```bash
+git clone https://github.com/Uchida16104/NETES.git
+```
+
+If you are deploying your own instance, fork the repository first, then clone your fork.
+
+---
+
+### 2. Deploy the Frontend to Vercel
+
+Create a new project on Vercel and configure it as follows:
+
+* Root Directory: ``` web/frontend ```
+
+* Framework Preset: Other
+
+* Build Command: ``` npm run build ```
+
+* Output Directory: ``` dist ```
+
+* Install Command: ``` npm install ```
+
+Environment Variables (Vercel)
+
+Set the following environment variable:
+
+```
+VITE_API_BASE=https://<your-project-name>.onrender.com/api
+```
+
+This value is injected at build time, so redeploy the project after changing it.
+
+---
+
+### 3. Deploy the Backend to Render (Docker)
+
+Create a new Web Service on Render using Docker.
+
+* Root Directory: (leave empty)
+
+* Region: Oregon
+
+* Instance Type: Free (optional)
+
+* Dockerfile Path: ``` ./Dockerfile ```
+
+* Docker Command: (leave empty)
+
+* Pre-Deploy Command: (leave empty)
+
+Environment Variables (Render)
+
+Set the following variables:
+
+```
+APP_DEBUG=false
+APP_ENV=production
+CACHE_STORE=file
+DB_CONNECTION=sqlite
+DB_DATABASE=/app/web/backend/laravel/database/database.sqlite
+QUEUE_CONNECTION=sync
+SESSION_DRIVER=file
+```
+
+Render will build and start the Laravel API using the Dockerfile.
+
+---
+
+### 4. Verify the Connection
+
+Once both services are deployed:
+
+* The frontend (Vercel) should access the backend via ``` VITE_API_BASE ```
+
+* The backend API should be reachable at:
+
+```
+https://<your-project-name>.onrender.com/api
+```
+
+If CORS and environment variables are correctly configured, the frontend and backend will communicate successfully.
+
+## Caution
+
+### 1. Frontend and Backend Are Deployed Separately
+
+This project uses a **fully separated architecture**:
+
+- Frontend: Vite SPA deployed on Vercel
+- Backend: Laravel API deployed on Render
+- Database: SQLite file inside the Render container
+
+They are connected only via HTTP API calls.
+
+---
+
+### 2. SQLite Persistence on Render Free Plan
+
+When using the Render Free plan:
+
+- The SQLite database file **may not be persistent**
+- Data can be lost when the service restarts or sleeps
+
+For production use, consider switching to an external database service.
+
+---
+
+### 3. Dockerfile Responsibilities
+
+The Dockerfile must ensure:
+
+- The SQLite file exists (`database.sqlite`)
+- Proper write permissions for `storage` and `bootstrap/cache`
+- A valid `APP_KEY` is generated (or provided)
+
+If any of these are missing, the backend may fail to start.
+
+---
+
+### 4. git push --force-with-lease
+
+``` git push --force-with-lease ``` should only be used when you intentionally rewrite commit history.
+
+For normal development and deployment, a standard ``` git push ``` is sufficient.
+
+---
+
+### 5. Environment Variables Are Mandatory
+
+Missing or incorrect environment variables on either Vercel or Render will cause build or runtime failures.
+
+Always redeploy after updating environment variables.
+
+
 ## Links
 * [frontend](https://netes.vercel.app)
 * [backend](https://netes.onrender.com)
