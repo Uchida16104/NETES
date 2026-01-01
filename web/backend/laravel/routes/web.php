@@ -11,6 +11,33 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::post('/run-job', function(Request $request) {
+    $lang = $request->input('language');
+
+    $logFile = storage_path('logs/render.log');
+    file_put_contents($logFile, "");
+
+    $sampleLog = "[".date('H:i:s')."] Running $lang job...\n";
+    file_put_contents($logFile, $sampleLog, FILE_APPEND);
+
+    return response()->json(['status' => 'ok']);
+});
+
+Route::get('/logs', function () {
+    $logFile = storage_path('logs/render.log');
+
+    if (!file_exists($logFile) || filesize($logFile) === 0) {
+        return "<pre class='text-sm bg-black p-3 rounded overflow-auto h-96'>No logs yet.</pre>";
+    }
+
+    $lines = file($logFile, FILE_IGNORE_NEW_LINES);
+    $lastLines = array_slice($lines, -80);
+
+    return "<pre class='text-sm bg-black p-3 rounded overflow-auto h-96'>"
+        . implode("\n", $lastLines)
+        . "</pre>";
+});
+
 Route::get('/status', function () {
 
     if (!file_exists(NETES_STATUS_FILE)) {
@@ -37,22 +64,6 @@ Route::get('/status', function () {
     }
 
     return response()->json($json);
-});
-
-
-Route::get('/logs', function () {
-
-    if (!file_exists(NETES_LOG_FILE)) {
-        return "<pre class='text-sm bg-black p-3 rounded overflow-auto h-96'>No logs yet.</pre>";
-    }
-
-    $lines = file(NETES_LOG_FILE, FILE_IGNORE_NEW_LINES);
-
-    $lastLines = array_slice($lines, -80);
-
-    return "<pre class='text-sm bg-black p-3 rounded overflow-auto h-96'>"
-        . implode("\n", $lastLines)
-        . "</pre>";
 });
 
 Route::get('/java', function () {
