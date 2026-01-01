@@ -82,7 +82,11 @@ Example:
 
 ## Usage
 
-The dashboard of [backend](https://netes.onrender.com) (Ex: https://dashboard.render.com/web/srv-xxxxxxxxxxxxxxxxxxxxxx/deploys/dep-oooooooooooooooooo) responded by writing the API link when the user clicked either the “Run Python,” “Run Rust,” or “Run Java” button on the [frontend](https://netes.vercel.app).
+The dashboard of backend (Ex: https://dashboard.render.com/web/srv-xxxxxxxxxxxxxxxxxxxxxx/deploys/dep-oooooooooooooooooo) responded by writing the API link when the user clicked either the “Run Python,” “Run Rust,” or “Run Java” button on the frontend.
+
+## Links
+* [frontend](https://netes.vercel.app)
+* [backend](https://netes.onrender.com)
 
 ## Languages and Roles
 
