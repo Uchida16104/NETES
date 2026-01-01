@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 const NETES_STATUS_FILE = '/tmp/netes/status.json';
 const NETES_LOG_FILE    = '/tmp/netes/web.log';
@@ -42,11 +43,16 @@ Route::get('/status', function () {
 Route::get('/logs', function () {
 
     if (!file_exists(NETES_LOG_FILE)) {
-        return '';
+        return "<pre class='text-sm bg-black p-3 rounded overflow-auto h-96'>No logs yet.</pre>";
     }
 
     $lines = file(NETES_LOG_FILE, FILE_IGNORE_NEW_LINES);
-    return implode("\n", array_slice($lines, -80));
+
+    $lastLines = array_slice($lines, -80);
+
+    return "<pre class='text-sm bg-black p-3 rounded overflow-auto h-96'>"
+        . implode("\n", $lastLines)
+        . "</pre>";
 });
 
 Route::get('/java', function () {
@@ -71,4 +77,13 @@ Route::get('/java', function () {
     file_put_contents(NETES_LOG_FILE, $line, FILE_APPEND | LOCK_EX);
 
     return response($output, 200, ['Content-Type' => 'text/plain']);
+});
+
+
+Route::post('/render-webhook', function (Request $request) {
+    $log = $request->input('log');
+    if ($log) {
+        file_put_contents(storage_path('logs/render.log'), $log . "\n", FILE_APPEND);
+    }
+    return response()->json(['status' => 'ok']);
 });
