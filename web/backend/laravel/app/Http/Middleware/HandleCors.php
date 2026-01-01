@@ -1,21 +1,36 @@
-return [
-    'paths' => ['api/*'],
-    'allowed_methods' => ['*'],
-    'allowed_origins' => ['https://netes.vercel.app'],
-    'allowed_origins_patterns' => [],
-    'allowed_headers' => ['*'],
-    'exposed_headers' => [],
-    'max_age' => 0,
-    'supports_credentials' => false,
-];
-public function handle($request, Closure $next)
-{
-    if ($request->getMethod() === "OPTIONS") {
-        return response('', 200)
-            ->header('Access-Control-Allow-Origin', 'https://netes.vercel.app')
-            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-            ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    }
+<?php
 
-    return $next($request);
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class HandleCors
+{
+    /**
+     * Handle an incoming request and apply CORS headers.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function handle(Request $request, Closure $next): Response
+    {
+        
+        if ($request->isMethod('OPTIONS')) {
+            return response()->json([], 200)
+                ->header('Access-Control-Allow-Origin', 'https://netes.vercel.app')
+                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
+                ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+                ->header('Access-Control-Max-Age', '86400');
+        }
+
+        $response = $next($request);
+
+        return $response
+            ->header('Access-Control-Allow-Origin', 'https://netes.vercel.app')
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
+            ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+    }
 }
