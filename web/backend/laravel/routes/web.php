@@ -8,32 +8,32 @@ const NETES_LOG_FILE    = '/tmp/netes/web.log';
 const JAVA_SRC          = '../../../../gui/java/NetesGUI.java';
 
 Route::get('/', function () {
+    $logFile = storage_path('logs/render.log');
+    file_put_contents($logFile, "");
     return view('index');
 });
 
 Route::post('/run-job', function(Request $request) {
     $lang = $request->input('language');
-
     $logFile = storage_path('logs/render.log');
-    file_put_contents($logFile, "");
-
     $sampleLog = "[".date('H:i:s')."] Running $lang job...\n";
     file_put_contents($logFile, $sampleLog, FILE_APPEND);
 
     return response()->json(['status' => 'ok']);
 });
 
+
 Route::get('/logs', function () {
     $logFile = storage_path('logs/render.log');
 
     if (!file_exists($logFile) || filesize($logFile) === 0) {
-        return "<pre class='text-sm bg-black p-3 rounded overflow-auto h-96'>No logs yet.</pre>";
+        return "<pre class='text-sm bg-black text-white p-3 rounded overflow-auto h-96'>No logs yet.</pre>";
     }
 
     $lines = file($logFile, FILE_IGNORE_NEW_LINES);
     $lastLines = array_slice($lines, -80);
 
-    return "<pre class='text-sm bg-black p-3 rounded overflow-auto h-96'>"
+    return "<pre class='text-sm bg-black text-white p-3 rounded overflow-auto h-96'>"
         . implode("\n", $lastLines)
         . "</pre>";
 });
