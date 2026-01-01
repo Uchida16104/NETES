@@ -29,31 +29,19 @@
 </div>
 
 <!-- Job Buttons -->
-<div class="p-4 space-x-2">
-    <button 
-        class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-        onclick="runJob('python')">
-        Run Python
-    </button>
-    <button 
-        class="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-        onclick="runJob('rust')">
-        Run Rust
-    </button>
-    <button 
-        class="bg-purple-700 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded"
-        onclick="runJob('java')">
-        Run Java
-    </button>
+<div class="space-x-2 mb-6">
+    <button onclick="runJob('python')" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Run Python</button>
+    <button onclick="runJob('rust')" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Run Rust</button>
+    <button onclick="runJob('java')" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Run Java</button>
 </div>
 
 <!-- Logs Section -->
-<div class="p-4">
+<div id="log-container">
     <pre
         hx-get="/logs"
         hx-trigger="every 3s"
         hx-swap="outerHTML"
-        class="text-sm bg-black p-3 rounded overflow-auto h-96">
+        class="text-sm bg-black text-white p-3 rounded overflow-auto h-96">
 Loading logs...
     </pre>
 </div>
