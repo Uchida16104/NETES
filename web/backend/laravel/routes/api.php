@@ -35,3 +35,12 @@ Route::get('/java', function () {
         'output' => $output
     ]);
 });
+
+Route::options('{any}', function () {
+    return response()->json([], 200, [
+        'Access-Control-Allow-Origin' => 'https://netes.vercel.app',
+        'Access-Control-Allow-Methods' => 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers' => 'Content-Type, Authorization, X-Requested-With',
+        'Access-Control-Max-Age' => '86400'
+    ]);
+})->where('any', '.*');
