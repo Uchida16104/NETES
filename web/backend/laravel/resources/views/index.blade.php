@@ -20,7 +20,7 @@
     <div
         hx-get="/status"
         hx-trigger="every 3s"
-        hx-swap="innerHTML"
+        hx-swap="outerHTML"
         class="text-xl">
         Checking...
     </div>
