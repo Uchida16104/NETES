@@ -1,57 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>NETES Dashboard</title>
-  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NETES Dashboard</title>
+
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- HTMX 1.9.10 -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 </head>
-<body class="bg-gray-100 p-6">
+<body class="bg-gray-100 text-gray-900 p-6">
 
-  <h1 class="text-3xl font-bold mb-6">NETES Dashboard</h1>
+    <div class="max-w-4xl mx-auto">
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <h1 class="text-2xl font-bold mb-4">NETES Dashboard</h1>
 
-    <!-- Python Output -->
-    <div class="bg-white shadow rounded p-4 overflow-auto h-96">
-      <h2 class="text-xl font-semibold mb-2">Python Output</h2>
-      <button 
-        class="bg-blue-500 text-white px-4 py-2 rounded mb-2"
-        hx-get="https://netes.onrender.com/python"
-        hx-target="#python-output"
-        hx-swap="innerHTML">
-        Run Python
-      </button>
-      <pre id="python-output" class="whitespace-pre-wrap text-sm"></pre>
+        <!-- Run Job Buttons -->
+        <div class="space-x-2 mb-6">
+            <button onclick="runJob('python')" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Run Python</button>
+            <button onclick="runJob('rust')" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Run Rust</button>
+            <button onclick="runJob('java')" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Run Java</button>
+        </div>
+
+        <!-- Logs Display -->
+        <div>
+            <pre
+                hx-get="/logs"
+                hx-trigger="every 3s"
+                hx-swap="outerHTML"
+                class="text-sm bg-black text-white p-3 rounded overflow-auto h-96">
+Loading logs...
+            </pre>
+        </div>
+
     </div>
 
-    <!-- Rust Output -->
-    <div class="bg-white shadow rounded p-4 overflow-auto h-96">
-      <h2 class="text-xl font-semibold mb-2">Rust Output</h2>
-      <button 
-        class="bg-green-500 text-white px-4 py-2 rounded mb-2"
-        hx-get="https://netes.onrender.com/rust"
-        hx-target="#rust-output"
-        hx-swap="innerHTML">
-        Run Rust
-      </button>
-      <pre id="rust-output" class="whitespace-pre-wrap text-sm"></pre>
-    </div>
-
-    <!-- Java Output -->
-    <div class="bg-white shadow rounded p-4 overflow-auto h-96 col-span-2">
-      <h2 class="text-xl font-semibold mb-2">Java Output</h2>
-      <button 
-        class="bg-yellow-500 text-white px-4 py-2 rounded mb-2"
-        hx-get="https://netes.onrender.com/java"
-        hx-target="#java-output"
-        hx-swap="innerHTML">
-        Run Java
-      </button>
-      <pre id="java-output" class="whitespace-pre-wrap text-sm"></pre>
-    </div>
-
-  </div>
+    <!-- Run Job Function -->
+    <script>
+        function runJob(lang) {
+            // POST to Laravel endpoint
+            fetch('https://netes.onrender.com/run-job', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ language: lang })
+            });
+        }
+    </script>
 
 </body>
 </html>
